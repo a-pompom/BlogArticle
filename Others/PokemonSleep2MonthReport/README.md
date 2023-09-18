@@ -2,7 +2,7 @@
 
 ポケモンスリープを触って2ヶ月ほど経ったので、感想をだらだらと書いてみます。
 
-![image](https://github.com/a-pompom/a-pompom/assets/43694794/1030f50e-be9b-4933-b369-fd6e1a940062)
+![image](https://github.com/a-pompom/BlogArticle/assets/43694794/b3307593-eeb3-405a-af1a-213f81893ff3)
 
 ## ざっくり要約
 
@@ -22,7 +22,7 @@
 
 ### よかったこと-睡眠を俯瞰できる
 
-![image](https://github.com/a-pompom/a-pompom/assets/43694794/10b25a2c-4236-4879-95dc-46519648c45a)
+![image](https://github.com/a-pompom/BlogArticle/assets/43694794/389b166f-3eb7-43fd-bd34-c98c62493c09)
 
 ポケモンスリープを始めるまで睡眠は、ちょっと時間短かったかも・なんかそこそこ寝た気がするぐらいのざっくりした感覚でしか捉えていませんでした。
 
@@ -44,7 +44,7 @@
 
 ### よかったこと-ポケモンたちに癒される
 
-![image](https://github.com/a-pompom/a-pompom/assets/43694794/66dea527-34d0-4537-9547-f4259e987472)
+![image](https://github.com/a-pompom/BlogArticle/assets/43694794/512d9059-c65d-42f2-aabd-c1da33403d03)
 
 寝起きはしばらく布団でごそごそしてから起き上がるので、ポケモンと触れ合うのがちょうど良い時間となっています。
 2ヶ月も触っていると、ポケモンの寝顔を撮影してポケモンたちと一緒に起きる感じの生活が定着してきました。
