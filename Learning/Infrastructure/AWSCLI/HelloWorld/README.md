@@ -1,14 +1,12 @@
 # 概要
 
-AWSに入門する土台をつくるためにAWS CLIの最初の一歩を踏み出します。
+AWSに入門する土台をつくるために、AWS CLIの最初の一歩を踏み出します。
 
 ## ゴール
 
 AWS CLIを動かす環境をつくり、Hello WorldがてらVPCを構築することを目指します。
 
 ## 前提
-
-環境やAWS CLIのバージョンは以下の通りです。
 
 ```bash
 $ aws --version
@@ -37,10 +35,10 @@ aws-cli/2.17.42 Python/3.11.9 Windows/10 exe/AMD64
 
 ### 認証
 
-IAMユーザと紐づくアクセスキーによる認証は、非推奨のようです。ここでは、推奨されているIAM Identity Centerを使って認証していきます。
+ここでは、公式にて推奨されているIAM Identity Centerを使って認証していきます。
 [参考](https://docs.aws.amazon.com/cli/v1/userguide/cli-authentication-user.html)
 
-とはいえ、AWSに入門したてで理解の浅い状態なので、ここでは手順を解説した記事を参考リンクとして載せておくに留めておきます。
+とはいえ、AWSに入門したてで理解の浅い状態なので、ひとまずは手順を解説した記事を参考リンクとして載せておくに留めておきます。
 (いずれIAMにも入門したい...。)
 [参考](https://dev.classmethod.jp/articles/aws-cli-for-iam-identity-center-sso/)
 
@@ -61,7 +59,7 @@ Attempting to automatically open the SSO authorization page in your default brow
 ...
 ```
 
-そして、`aws sso login`コマンドでクレデンシャルをもとにトークンを取得します。以降はトークンで認証し、AWSのリソースを操作していきます。
+そして、`aws sso login`コマンドでトークンを取得します。以降はトークンで認証し、AWSのリソースを操作していきます。
 [参考](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sso/login.html)
 
 ```bash
@@ -87,10 +85,99 @@ AWS CLIを使う準備が整いました。ここではHello WorldがてらVPC�
 
 ### ドキュメント
 
+AWS CLIからリソースを操作するときは、コマンドの使い方を理解することが重要です。コマンドの詳細は公式ドキュメントにまとまっているので、公式ドキュメントをどうやって読めば良いのか、簡単な地図をつくっておきます。
+
 ### リファレンスの構造を読み解く
+
+VPC作成コマンドを例に見てみます。
+[参考](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/create-vpc.html)
+
+#### Description
+
+リソース作成系のコマンドは、操作対象のリソースの補足説明が主に書かれています。具体的には、コマンドのオプションと関わりが深いAWS公式ドキュメントへのリンクが載っていることが多いようです。
+AWS公式ドキュメントは膨大でどこから見れば良いか迷子になりやすいと感じています。
+ですので、こうやって必要最小限のリンクだけまとまっていると、入門にはちょうど良いボリュームになりそうです。
+
+#### Synopsis
+
+Linuxコマンドのマニュアルのように、使えるオプションがまとまっています。`[]`で囲まれたものは任意なので、まずは必須オプションだけ押さえておきたいです。
+
+#### Options
+
+Synopsisの項で見たオプションの詳細説明が書かれています。
+
+#### Examples
+
+ユースケース別のコマンドの実行例が載っています。あわせて、コマンドを実行した結果操作されたリソースの情報がOutputとして出力されています。
+ドキュメントを見るときは、最初にこの辺りを眺めておけば、コマンドが何をしているのかイメージを掴むのに良さそうです。
 
 ### コマンド実行
 
+リファレンスに従い、実際にVPCをつくってみます。
+今回はHello World的な位置づけなので、とりあえずコマンド例をもとに見よう見まねでコマンドを叩いてみます。
+
+```bash
+$ aws ec2 create-vpc \
+     --cidr-block '10.0.0.0/16' \
+     --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=HelloAWSCLI}]' \
+     --profile 'PROFILE'
+
+# output example
+{
+    "Vpc": {
+        "CidrBlock": "10.0.0.0/16",
+        "DhcpOptionsId": "dopt-0b115d2f27d7dd260",
+        "State": "pending",
+        "VpcId": "VPC_ID",
+        "OwnerId": "OWNER_ID",
+        "InstanceTenancy": "default",
+        "Ipv6CidrBlockAssociationSet": [],
+        "CidrBlockAssociationSet": [
+            {
+                "AssociationId": "vpc-cidr-assoc-02df3e0e0aea59f92",
+                "CidrBlock": "10.0.0.0/16",
+                "CidrBlockState": {
+                    "State": "associated"
+                }
+            }
+        ],
+        "IsDefault": false,
+        "Tags": [
+            {
+                "Key": "Name",
+                "Value": "HelloAWSCLI"
+            }
+        ]
+    }
+}
+```
+
+出力のJSONにはVPCの特徴を掴むのに良さそうな情報がまとまっています。CLIはGitやDocker・Linuxコマンドなどで慣れ親しんだインタフェースで操作できるので、AWSへ入門するのにも良さそうです。
+
+コマンドを実行すると、VPCが作成されたことをコンソール上でも確認できました。
+
+![VPC作成](https://s3.ap-northeast-1.amazonaws.com/a-pompom.net.images/2024/09/aws-cli-hello-world-create-vpc.PNG)
+
 ### 後片付け
 
+今後のことを考えると、実験用につくったリソースで不要な料金が発生しないよう、後片付けを習慣づけておきたいです。
+ということで、つくったVPCを消しておきます。
+
+VPCは、`aws ec2 delete-vpc`コマンドで削除することができます。
+[参考](https://awscli.amazonaws.com/v2/documentation/api/2.1.21/reference/ec2/delete-vpc.html)
+
+削除対象のVPCのIDを明示してコマンドを実行します。
+
+```bash
+aws ec2 delete-vpc \
+  --vpc-id 'VPC_ID' \
+  --profile 'PROFILE'
+```
+
+コンソールにて、VPCが削除されたことを確認しました。
+
+![VPC削除](https://s3.ap-northeast-1.amazonaws.com/a-pompom.net.images/2024/09/aws-cli-hello-world-delete-vpc.PNG)
+
 ## まとめ
+
+本記事では、AWS CLIに入門してみました。CLIは思ったよりもとっつきやすいと感じたので、ここから普段触っているリソースを構築してみて、AWSへの理解を深めていきたいです。
